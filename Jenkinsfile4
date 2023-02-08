@@ -1,0 +1,18 @@
+pipeline {
+  agent any
+  tools {
+        maven 'Maven' 
+    }
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+  }
+  stages {
+    stage('Scan') {
+      steps {
+        withSonarQubeEnv(installationName: 'sq1') { 
+          sh './usr/bin/mvn package sonar:sonar'
+        }
+      }
+    }
+  }
+}

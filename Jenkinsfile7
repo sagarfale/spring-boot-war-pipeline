@@ -1,0 +1,15 @@
+pipeline {
+  agent any
+  tools {
+    maven 'Maven'
+  }
+  stages {
+    stage('Build') {
+      steps {
+        sh 'mvn package'
+        sh 'ls -ltr target/hello-world-0.0.1-SNAPSHOT.war'
+        sh 'jfrog rt upload --url http://192.168.29.22:8082/artifactory --access-token ${ARTIFACTORY_ACCESS_TOKEN} target/hello-world-0.0.1-SNAPSHOT.war java-web-app/'
+      }
+    }
+  }
+}
